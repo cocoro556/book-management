@@ -27,8 +27,11 @@ COPY ./default.conf /etc/apache2/sites-available/000-default.conf
 # Laravelアプリケーションをコピー
 COPY ./book-management /var/www/html
 
-# Composerの依存関係をインストール
+# .envファイルを作成
 WORKDIR /var/www/html
+RUN cp .env.example .env
+
+# Composerの依存関係をインストール
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Laravelの設定

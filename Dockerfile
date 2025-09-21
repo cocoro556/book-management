@@ -59,5 +59,6 @@ RUN ls -la /var/www/html/vendor/
 # 権限設定
 RUN chown -R www-data:www-data /var/www/html
 RUN chmod -R 755 /var/www/html
+RUN chmod -R 644 /var/www/html/public/css/
 
 WORKDIR /var/www/html

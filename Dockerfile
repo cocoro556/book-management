@@ -31,11 +31,23 @@ COPY ./book-management /var/www/html
 WORKDIR /var/www/html
 RUN cp .env.example .env
 
+# .envファイルをSQLite用に修正
+RUN sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=sqlite/' .env
+RUN sed -i 's/DB_HOST=127.0.0.1/DB_DATABASE=\/var\/www\/html\/database\/database.sqlite/' .env
+RUN sed -i '/DB_PORT=/d' .env
+RUN sed -i '/DB_DATABASE=/d' .env
+RUN sed -i '/DB_USERNAME=/d' .env
+RUN sed -i '/DB_PASSWORD=/d' .env
+
 # Composerの依存関係をインストール
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
+# データベースファイルを作成
+RUN touch /var/www/html/database/database.sqlite
+
 # Laravelの設定
 RUN php artisan key:generate
+RUN php artisan migrate --force
 RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache

@@ -3,8 +3,7 @@ services:
     name: book-management
     env: php
     plan: free
-    buildCommand: |
-      php artisan migrate --force
+    # ビルドコマンドはDockerfileで実行
     # Apacheが自動的に起動するため、startCommandは不要
     envVars:
       - key: APP_ENV

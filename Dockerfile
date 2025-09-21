@@ -29,13 +29,17 @@ COPY ./book-management /var/www/html
 
 # Composerの依存関係をインストール
 WORKDIR /var/www/html
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Laravelの設定
 RUN php artisan key:generate
 RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
+
+# vendorディレクトリの確認
+RUN ls -la /var/www/html/
+RUN ls -la /var/www/html/vendor/
 
 # 権限設定
 RUN chown -R www-data:www-data /var/www/html

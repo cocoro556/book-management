@@ -24,4 +24,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN a2enmod rewrite
 COPY ./default.conf /etc/apache2/sites-available/000-default.conf
 
+# Laravelアプリケーションをコピー
+COPY ./book-management /var/www/html
+
+# 権限設定
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html
+
 WORKDIR /var/www/html
